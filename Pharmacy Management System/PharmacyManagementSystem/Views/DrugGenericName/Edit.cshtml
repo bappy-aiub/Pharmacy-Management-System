@@ -1,0 +1,72 @@
+﻿@model PharmacyManagementSystem.Models.Drug_Generic_name
+
+@{
+    ViewBag.Title = "Edit";
+
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Response.Write("<script>alert('Access Denied') ; window.location.href='/DrugGenericName/Index'</script>");
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+<h2>&nbspEdit Drug Generic Name</h2>
+
+<hr width="99%">
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <table cellspacing="40">
+
+        <tr align="right">
+            <td>Generic Name ID</td>
+            <td>
+                @Html.TextBoxFor(model => model.ID, new { style = "width:300px; height:25px; font-size: 16px;", @readonly = "readonly" })
+            </td>
+        </tr>
+
+        <tr align="right">
+            <td>Generic Name</td>
+            <td>
+                @Html.TextBoxFor(model => model.Genric_Name, new { style = "width:300px; height:25px; font-size: 16px;" })
+            </td>
+            <td align="left">@Html.ValidationMessageFor(model => model.Genric_Name, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Description</td>
+            <td>
+                @Html.TextAreaFor(model => model.Description, new { style = "width:300px; height:100px; font-size: 16px;" })
+            </td>
+            <td align="left">@Html.ValidationMessageFor(model => model.Description, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Update" style="width:100px; height:35px;" /></td>
+        </tr>
+
+    </table>
+
+}
+
+<div>
+    &nbsp  @Html.ActionLink("Back to List", "Index")
+</div>
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

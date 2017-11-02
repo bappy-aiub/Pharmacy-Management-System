@@ -1,0 +1,450 @@
+﻿@model IEnumerable<PharmacyManagementSystem.Models.Batch>
+@{
+    ViewBag.Title = "Index";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+<h2>&nbspNew Sales Entry</h2>
+
+<hr width="99%">
+<br />
+
+<table align="center">
+    <tr>
+        <td>
+            @using (@Html.BeginForm("Index", "SalesEntry", FormMethod.Get))
+            {
+                <b>&nbsp&nbspSearch By Medicine Name:</b>
+
+                @Html.TextBox("search", null, new { @style = " height:22px; width:200px;margin: 0px 5px 0px 10px" })    <input type="submit" value="Search" style=" height:29px; width:100px " />
+            }
+        </td>
+        
+       
+    </tr>
+</table>
+
+<br />
+
+<table border="1" cellpadding="10" align="center" id="mainTable">
+    <tr>
+        <th>
+            Batch ID
+        </th>
+        <th>
+            Medicine ID
+        </th>
+        <th>
+           Medicine Name
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Cost Price
+        </th>
+        <th>
+           Sell Price
+        </th>
+        <th>
+            Production Date
+        </th>
+        <th>
+           Expire Date
+        </th>
+    </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Batch_ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medicine_ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medicine_Information.Medicine_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                    
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost_Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sell_Price)
+                </td>
+                <td>
+                    @Convert.ToString(string.Format("{0:dd-MM-yyyy}", item.Production_Date))
+                </td>
+                <td>
+                   @Convert.ToString(string.Format("{0:dd-MM-yyyy}", item.Expire_Date))
+                </td>
+            </tr>
+        }
+    
+</table>
+<br />
+<br />
+
+<table align="center">
+    <tr>
+        <th>
+            Invoice ID
+        </th>
+        <th>
+            Entry Date
+        </th>
+    </tr>
+    <tr>
+        <td align="center">
+            @Html.TextBox("InvoiceID", DateTime.Now.ToString("HHmmss"), new { id = "invoiceID", style = "width:100px;height40px;font-size:20px;", @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.TextBox("date", null, new { style = "width:300px; height:30px; font-size: 16px;", @type = "date", id = "purchaseDate" })
+            <span class="error">*Entry date is required </span>
+        </td>
+    </tr>
+</table>
+<br />
+<br />
+
+<table cellpadding="7" align="center">
+    <tr>
+        <th>Medicine ID</th>
+        <th>Medicine Name</th>
+        <th>Quantity</th>
+        <th>Sell Price</th>
+        <th>Amount</th>
+    </tr>
+    <tr>
+        <td>
+            <input type="hidden" name="batchID" id="getBatchID" readonly />
+            <input type="text" id="getMedicineID" style="width:200px; height:25px; font-size: 16px;" />
+        </td>
+        
+        <td>
+            <input type="text" id="getMedicineName" style="width:200px; height:25px; font-size: 16px;" />
+        </td>
+        <td>
+            <input type="hidden" id="getAvailability" readonly class="form-control input-sm" />
+            <input type="text" id="getQuantity" style="width:200px; height:25px; font-size: 16px;" />
+        <td>
+            <input type="text" id="getSellPrice" style="width:200px; height:25px; font-size: 16px;" />
+        </td>
+        <td>
+            <input type="text" id="getAmount" style="width:200px; height:25px; font-size: 16px;" />
+        </td>
+        <td>
+            <input type="button" id="btnAdd" value="Add to list" style="width:100px; height:35px;" />
+        </td>
+    </tr>
+</table>
+
+<br />
+
+<div style=" background-color:#34495e; color:white; padding:10px;">Purchase Items</div>
+@********table here***********@
+<div id="orderItems" style="height:260px; overflow-y:scroll; border:1px solid #BFAEAE;">
+</div>
+<div align="right">
+    <br />
+    <button style="width:150px; height:30px" type="button" id="btnNext">
+        Next
+    </button>
+</div>
+<br />
+
+@*Total Amount Table*@
+<table align="center">
+    <tr>
+        <td>Total Amount</td>
+        <td><input type="number" id="totalAmount" style="width:300px; height:30px; font-size: 16px;" readonly />
+    </tr>
+
+    <tr>
+        <td>Discount(%)</td>
+        <td>
+            <input type="number" id="discount" style="width:300px; height:30px; font-size: 16px;" />
+            <span class="error"> *Give input '0' if there is no discount</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Discount Amount</td>
+        <td><input type="number" id="discountAmount" style="width:300px; height:30px; font-size: 16px;" readonly />
+    </tr>
+
+    <tr>
+        <td>Total Payable</td>
+        <td><input type="text" style="width:300px; height:30px; font-size: 16px;" id="totalPayable" readonly />
+    </tr>
+    <tr>
+        <td>Paid</td>
+        <td><input type="text" style="width:300px; height:30px; font-size: 16px;" id="paid" />
+    </tr>
+    <tr>
+        <td>Return</td>
+        <td><input type="text" style="width:300px; height:30px; font-size: 16px;" id="return" readonly/>
+            <span class="error"> *Return amount is required</span>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td><br /><input type="submit" id="btnSubmit" value="Submit" style="width:200px; height:35px;" /></td>
+    </tr>
+</table>
+<br />
+<br />
+
+
+<script>
+
+        document.getElementById('mainTable').onclick = function (event) {
+            event = event || window.event;
+            var target = event.target || event.srcElement;
+            while (target && target.nodeName != 'TR') {
+                target = target.parentElement;
+            }
+            var cells = target.cells;
+            if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                return;
+            }
+            $(function () {
+                $('#getBatchID').val($.trim(cells[0].innerHTML));
+                $('#getMedicineID').val($.trim(cells[1].innerHTML));
+                $('#getMedicineName').val($.trim(cells[2].innerHTML));
+                $('#getAvailability').val($.trim(cells[3].innerHTML));
+                $('#getSellPrice').val($.trim(cells[5].innerHTML));            
+            });
+            //clears quantity and amount field
+            $('#getQuantity').val('');
+            $('#getAmount').val('');
+            //focuses cursor on Qty field
+            document.getElementById('getQuantity').focus();
+        }
+
+        //Calculate Amount based on input Quantity
+        $('#getQuantity').keyup(function (){
+            var available = Number($('#getAvailability').val());
+            var quantity = Number($('#getQuantity').val());
+            var sellPrice = Number($('#getSellPrice').val());
+            if (quantity > available) {
+                $('#getQuantity').val(available);
+                quantity = available;
+            }
+            var amount = (quantity * sellPrice).toFixed(2);
+            $('#getAmount').val(amount);
+        });
+
+        var salesItems = [];
+        //Adding items to sales items
+        $('#btnAdd').on('click', function () {
+
+            if ($('#getQuantity').val() == '' || $('#getBatchID').val() == '' || $('#getQuantity').val() == 0 || !$.isNumeric($('#getQuantity').val())) {
+                alert('Please Enter Quantity');
+                //alert();
+            }
+
+            else {
+                    salesItems.push({
+                        Batch_ID: $('#getBatchID').val(),
+                        Medicine_ID: $('#getMedicineID').val(),
+                        Medicine_Name: $('#getMedicineName').val(),
+                        Quantity: $('#getQuantity').val(),
+                        Cost: $('#getSellPrice').val(),
+                        Amount: $('#getAmount').val(),
+                        Bill_Invoice: $("#invoiceID").val()
+                    });
+
+                    if (salesItems.length > 0) {
+                        var $table = $('<table id="mytable" border="1" cellpadding="10"/>');
+                        $table.append('<thead><tr><th class="txtBatchID">Batch ID</th><th>Medicine ID</th><th>Medicine Name</th><th>Quantity</th><th>Rate</th><th>Amount</th><th>Delete</th></tr></thead>');
+                        var $tbody = $('<tbody/>');
+
+                        $.each(salesItems, function (i, val) {
+                            var $row = $('<tr class="salesItemsRows"/>');
+                            //$row.append($('<td/>').html(val.Medicine_ID));
+                            $row.append($('<td class="txtBatchID"/>').html(val.Batch_ID));
+                            $row.append($('<td/>').html(val.Medicine_ID));
+                            $row.append($('<td />').html(val.Medicine_Name));
+                            $row.append($('<td class="tdQuantity"/>').html(val.Quantity));
+                            $row.append($('<td class="tdSellPrice"/>').html(val.Cost));
+                            $row.append($('<td/>').html(val.Amount));
+                            $row.append($('<td/>').html('<a href=# onclick="removeItem(this)" >Remove</a>'));
+                            $tbody.append($row);
+                        });
+                        $table.append($tbody);
+                        $('#orderItems').html($table);
+
+                        $(function () {
+                            $clear = '';
+                            $('#getMedicineID').val('');
+                            $('#getMedicineName').val('');
+                            $('#getQuantity').val('');
+                            $('#getSellPrice').val('');
+                            $('#getAmount').val('');
+                        });
+                    }
+                    else {
+                        alert("List is empty !");
+                    }
+                }     
+            
+        });
+
+        $('#btnNext').on('click', function () {
+
+            var isAllValid = true;
+
+            if (salesItems.length == 0) {
+                isAllValid = false;
+                alert('Please Add items to purchase!');
+            }
+            else {
+                var subTotal = 0;
+                var total = 0;
+                $('#totalAmount').val('');
+                $('#discount').val('');
+                $('#totalPayable').val('');
+
+                $('#mytable tr').each(function () {
+                    var quantity = $.trim($(this).find(".tdQuantity").html());
+                    var sellPrice = $.trim($(this).find(".tdSellPrice").html());
+                    total = Number(quantity) * Number(sellPrice);
+                    subTotal += total;
+                });
+
+                $('#totalAmount').val(subTotal);
+                $('#totalPayable').val(subTotal);
+            }
+        });
+
+        //For calculating  Grand Total after the Discount Percentage
+        $('#discount').keyup(function () {
+            var amount = Number($('#totalAmount').val());
+            var discount = Number($('#discount').val());
+
+            var discountAmount = (amount * discount) / 100;
+            var totalPayable = (amount - discountAmount).toFixed(2);
+            $('#discountAmount').val(discountAmount);
+            $('#totalPayable').val(totalPayable);
+
+            $('#paid').keyup(function () {
+
+                var paid = Number($('#paid').val());
+
+                var returned = (paid - totalPayable).toFixed(2);
+
+                $('#return').val(returned);
+            });
+        });
+
+        $('#btnSubmit').on('click', function () {
+
+            var isAllValid = true;
+
+            if (salesItems.length == 0) {
+                isAllValid = false;
+                alert('Please Add items to purchase!');
+            }
+
+            if ($('#purchaseDate').val() == '') {
+                isAllValid = false;
+                $('#purchaseDate').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#purchaseDate').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#discount').val() == '' || isNaN($('#discount').val())) {
+                isAllValid = false;
+                $('#discount').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#discount').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#return').val() == '') {
+                isAllValid = false;
+                $('#return').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#return').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if (isAllValid) {
+                var data = {
+                    Invoice_No: $("#invoiceID").val(),
+                    Date: $("#purchaseDate").val(),
+                    Total_Amount: $('#totalAmount').val(),
+                    Discount: $('#discount').val(),
+                    Discount_Amount: $('#discountAmount').val(),
+                    Total_Payable: $('#totalPayable').val(),
+                    Paid: $('#paid').val(),
+                    Returned: $('#return').val(),
+                    SalesItems: salesItems
+                }
+
+                $(this).val('Please wait...');
+
+                $.ajax({
+                    url: 'SaveSales',
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (d) {
+                        //check is successfully save to database
+                        if (d.status == true) {
+                            //will send status from server side
+                            alert('Successfully done.');
+                            location.reload(true);
+                            //clear form
+                            purchaseItems = [];
+                            $('#invoiceID').val('');
+                        }
+                        else {
+                            alert('Failed');
+                        }
+                        $('#submit').val('Save');
+                    },
+                    error: function () {
+                        alert('Error. Please try again.');
+                        $('#btnSubmit').val('Save');
+                    }
+                });
+            }
+        });
+
+</script>
+
+
+<style>
+     th{
+            width: 300px;
+     }
+
+     span.error {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+</style>

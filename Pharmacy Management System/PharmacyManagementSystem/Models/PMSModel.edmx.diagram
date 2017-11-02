@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8e2f00c97aca452c915a2975eb092aff" Name="Diagram1">
+        <EntityTypeShape EntityType="PMSModel.Batch" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.Bill_Information" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.Drug_Generic_name" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.Manufacturer" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.Medicine_Information" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.Purchase" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.Sale" Width="1.5" PointX="8.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.Supplier" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.sysdiagram" Width="1.5" PointX="10.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.User_Access" Width="1.5" PointX="5.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.User_Information" Width="1.5" PointX="8" PointY="8.75" IsExpanded="true" />
+        <AssociationConnector Association="PMSModel.FK__Batch__Medicine___1F98B2C1" ManuallyRouted="false" />
+        <AssociationConnector Association="PMSModel.FK__Batch__Purchase___1EA48E88" ManuallyRouted="false" />
+        <AssociationConnector Association="PMSModel.FK__Sales__Bill_Invo__25518C17" ManuallyRouted="false" />
+        <AssociationConnector Association="PMSModel.FK__Medicine___Gener__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="PMSModel.FK__Medicine___Manuf__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="PMSModel.FK__Sales__Medicine___245D67DE" ManuallyRouted="false" />
+        <AssociationConnector Association="PMSModel.FK__Purchase__Suppli__17036CC0" ManuallyRouted="false" />
+        <AssociationConnector Association="PMSModel.FK__User_Info__Usern__1B0907CE" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

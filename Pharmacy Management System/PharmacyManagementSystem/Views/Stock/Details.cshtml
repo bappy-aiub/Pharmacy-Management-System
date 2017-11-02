@@ -1,0 +1,71 @@
+﻿@model PharmacyManagementSystem.Models.Batch
+
+@{
+    ViewBag.Title = "Details";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+
+<h2>&nbspBatch Details</h2>
+
+<hr width="99%">
+
+<table border="1" cellpadding="10" style="margin-top:30px; margin-left:10px; margin-right:10px;margin-bottom:30px">
+
+    <tr>
+        <td>Medicine Name</td>
+        <td> @Html.DisplayFor(model => model.Medicine_Information.Medicine_Name)</td>
+    </tr>
+
+    <tr>
+        <td>Batch ID</td>
+        <td> @Html.DisplayFor(model => model.Batch_ID)</td>
+    </tr>
+
+    <tr>
+        <td>Quantity</td>
+        <td> @Html.DisplayFor(model => model.Quantity)</td>
+    </tr>
+
+    <tr>
+        <td>Cost Price</td>
+        <td> @Html.DisplayFor(model => model.Cost_Price)</td>
+    </tr>
+
+    <tr>
+        <td>Sell Price</td>
+        <td> @Html.DisplayFor(model => model.Sell_Price)</td>
+    </tr>
+
+    <tr>
+        <td>Production Date</td>
+        <td> @Html.DisplayFor(model => model.Production_Date)</td>
+    </tr>
+
+    <tr>
+        <td>Expire Date</td>
+        <td>  @Html.DisplayFor(model => model.Expire_Date)</td>
+    </tr>
+
+
+</table>
+
+
+<p>
+    &nbsp&nbsp  @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

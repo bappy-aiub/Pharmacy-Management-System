@@ -1,0 +1,85 @@
+﻿@*@model PharmacyManagementSystem.Models.Bill_Information*@
+@model IEnumerable<PharmacyManagementSystem.Models.Sale>
+
+@{
+    ViewBag.Title = "Details";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+
+<h2>&nbspBill Details</h2>
+
+<hr width="99%">
+
+<table align="center">
+    <tr>
+        <td style="font-weight:bold;font-size:20px;">Purchase ID : </td>
+        <td></td>
+        <td align="center" style="font-size:20px;">@Html.DisplayFor(model => model.First().Bill_Invoice)</td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;font-size:20px;">Date : </td>
+        <td></td>
+        <td align="center" style="font-size:20px;">@Html.DisplayFor(model => model.First().Bill_Information.Date)</td>
+    </tr>
+</table>
+
+<br />
+
+<div align="center">
+
+    <table border="1" cellpadding="10" style="margin-top:10px; margin-left:10px;">
+        <tr>
+            <th>
+                   Medicine Name
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Sell Price
+            </th>
+            <th>
+                Amount
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medicine_Information.Medicine_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+
+<p>
+    &nbsp; @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,48 @@
+﻿@model PharmacyManagementSystem.Models.Supplier
+
+@{
+    ViewBag.Title = "Details";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+
+<h2>&nbspSupplier Details</h2>
+
+<hr width="99%">
+
+<table border="1" cellpadding="10" style="margin-top:30px; margin-left:10px; margin-right:10px;margin-bottom:30px">
+
+    <tr>
+        <td>Supplier Name</td>
+        <td> @Html.DisplayFor(model => model.Supplier_Name)</td>
+    </tr>
+
+    <tr>
+        <td>Contact</td>
+        <td> @Html.DisplayFor(model => model.Contact)</td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td> @Html.DisplayFor(model => model.Email)</td>
+    </tr>
+
+</table>
+
+<p>
+    &nbsp&nbsp  @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

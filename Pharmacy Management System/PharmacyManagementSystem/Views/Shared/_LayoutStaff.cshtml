@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    @*All the javascript and css files that are required by the application can be referenced here so that there is no need to reference them in each and every view*@
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <table border="1" align="center" style="width:1500px; font-family:Arial;">
+        <tr>
+            <td colspan="2" style="text-align:right">
+
+                <h3>@Html.ActionLink("Logout", "Logout", "Logout")</h3>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:200px;">
+                <h3>Dashboard</h3>
+                <h3>@Html.ActionLink("Purchase", "PurchaseIndex", "PurchaseIndex")</h3>
+                <h3>@Html.ActionLink("Inventory", "Inventory", "Inventory")</h3>
+                <h3>@Html.ActionLink("Sales", "Index", "Sales")</h3>
+            </td>
+            <td style="width:600px">
+                @RenderBody()
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center; font-size:x-small">
+                <h3>Website Footer</h3>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

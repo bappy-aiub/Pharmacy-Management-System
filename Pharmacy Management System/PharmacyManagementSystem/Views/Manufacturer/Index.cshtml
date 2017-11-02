@@ -1,0 +1,90 @@
+﻿@model IEnumerable<PharmacyManagementSystem.Models.Manufacturer>
+
+@{
+    ViewBag.Title = "Index";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+<h2>&nbspList of Manufacturers</h2>
+
+<hr width="99%">
+
+<p>
+    &nbsp&nbsp
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<p>
+    @using (Html.BeginForm())
+    {
+        <b>&nbsp&nbspSearch:</b>
+        @Html.TextBox("searchManufacturer", null, new { @style = " height:22px; width:200px;margin: 0px 5px 0px 10px" })    
+        <input type="submit" value="Search" style=" height:29px; width:100px " />
+    }
+</p>
+
+
+
+<table border="1" cellpadding="10" style="margin-top:10px; margin-left:10px;">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Manufacturer Name
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
+
+    @if (Model.Count() == 0)
+    {
+        <tr>
+            <td colspan="6" align="center">
+                No records match search criteria
+            </td>
+        </tr>
+    }
+
+    else { 
+        
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Manufacturer_Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </td>
+                </tr>
+            }
+    }
+
+</table>
+<br />
+<br />
+<div>
+    &nbsp   @Html.ActionLink("Back to Inventory", "Inventory", "Inventory")
+</div>
+<br />

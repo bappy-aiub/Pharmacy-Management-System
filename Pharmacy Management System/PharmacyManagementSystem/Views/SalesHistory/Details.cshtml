@@ -1,0 +1,50 @@
+﻿@model PharmacyManagementSystem.Models.Sale
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Sale</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Quantity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Quantity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Cost)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Cost)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Amount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Amount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Medicine_Information.Medicine_Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Medicine_Information.Medicine_Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Bill_Information.Discount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Bill_Information.Discount)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

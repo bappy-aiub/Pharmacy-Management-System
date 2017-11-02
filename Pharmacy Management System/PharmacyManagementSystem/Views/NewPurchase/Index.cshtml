@@ -1,0 +1,552 @@
+﻿@model PharmacyManagementSystem.Models.Batch
+
+@{
+    ViewBag.Title = "New Purchase";
+     if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/PurchaseIndex/PurchaseIndex'</script>");
+
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>  
+<script src="Scripts/jquery-1.7.1.min.js"></script>  
+
+<h2>&nbspNew Purchase Entry</h2>
+
+<hr width="99%">
+<br />
+   
+
+    <table cellspacing="40">
+
+        <tr align="right">
+            <td>Purchase ID </td>
+            @*<td align="left"><input type="text" id="purchaseID"  style="width:300px;height30px;font-size:16px;" /></td>*@
+            <td align="left">@Html.TextBox("PurchaseID", DateTime.Now.ToString("HHmmss"), new { id = "purchaseID", style = "width:300px;height30px;font-size:16px;", @readonly="readonly" })
+            </td>
+        </tr>
+
+        <tr align="right">
+            <td>Supplier Name</td>
+            <td>
+                <select id="SelectSupplier" style="width:300px; height:30px; font-size: 16px;"></select>
+                <span class="error"> *Please select a supplier</span>
+            </td>
+        </tr>
+
+
+        <tr align="right">
+            <td>Entry Date</td>
+            <td>
+                @Html.TextBox("date", null, new { style = "width:300px; height:30px; font-size: 16px;", @type = "date", id = "purchaseDate" })
+                <span class="error">*Entry date is required </span>
+            </td>
+        </tr>
+
+        <tr align="right">
+            <td>Medicine Name</td>
+            <td>
+                <select id="SelectMedicine" style="width:300px; height:30px; font-size: 16px;"></select>
+                <span class="error"> *Please select a medicine</span>
+            </td>
+        </tr>
+
+        <tr align="right">
+            <td>Batch</td>
+            <td>
+                <input type="text" id="batchID" onchange="BatchIDAvailability()" style="width:300px; height:30px; font-size: 16px;" />
+                <span class="error"> *Batch ID is required</span>
+                <span class="batchIDExist"> *Batch ID already exists</span>
+            </td>
+        </tr>
+
+        <tr align="right">
+            <td>Quantity</td>
+            <td>
+                <input type="text" id="quantity" style="width:300px; height:30px; font-size: 16px;" />
+                <span class="error"> *Quantity is required</span>
+            </td>
+        </tr>
+
+        <tr align="right">
+            <td>Cost Price</td>
+            <td>
+                <input type="text" id="costPrice" style="width:300px; height:30px; font-size: 16px;" />
+                <span class="error">*Cost Price is required</span>
+            </td>
+        </tr>
+
+        <tr align="right">
+            <td>Sell Price</td>
+            <td>
+                <input type="text" id="sellPrice" style="width:300px; height:30px; font-size: 16px;" />
+                <span class="error"> *Sell Price is required</span><span class="compare"> *Sell Price can not be less than Cost Price</span>
+            </td>
+        </tr>
+
+        <tr align="right">
+            <td>Production Date</td>
+            <td>
+                @Html.TextBox("date", null, new { style = "width:300px; height:30px; font-size: 16px;", @type = "date", id = "productionDate" })
+                <span class="error">*Production date is required </span>
+            </td>
+        </tr>
+
+        <tr align="right">
+            <td>Expire Date</td>
+            <td>
+                @Html.TextBox("date", null, new { style = "width:300px; height:30px; font-size: 16px;", @type = "date", id = "expireDate" })
+                <span class="error">*Expire date is required </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><input type="button" id="btnAdd" value="Add to list" style="width:100px; height:35px;" /></td>
+        </tr>
+    </table>
+
+
+    <div style=" background-color:#34495e; color:white; padding:10px;">Purchase Items</div>
+    @********table here***********@
+    <div id="orderItems" style="height:260px; overflow-y:scroll; border:1px solid #BFAEAE;">
+    </div>
+    <div align="right">
+        <br />
+        <button style="width:150px; height:30px" type="button" id="btnNext">
+            Next
+        </button>
+    </div>
+<br />
+
+<table align="center">
+        <tr>
+            <td>Amount</td>
+            <td><input type="number" id="amount" style="width:300px; height:30px; font-size: 16px;" readonly/>
+        </tr>
+
+        <tr>
+            <td>Discount(%)</td>
+            <td><input type="number" id="discount" style="width:300px; height:30px; font-size: 16px;" /> 
+                <span class="error"> *Invalid</span></td>
+        </tr>
+
+          <tr>
+            <td>Discount Amount</td>
+            <td><input type="number" id="discountAmount" style="width:300px; height:30px; font-size: 16px;" readonly  />
+        </tr>
+
+        <tr>
+            <td>GrandTotal</td>
+            <td><input type="text" style="width:300px; height:30px; font-size: 16px;" id="grandTotal" readonly />
+        </tr>
+
+        <tr>
+            <td>Remarks</td>
+            <td><textarea style="width:300px; height:50px; font-size: 16px;" id="description" class="textOnly"></textarea>
+             <span class="error"> *Description is requied</span></td>
+        </tr>
+
+        <tr>
+            <td>Payment</td>
+            <td>
+                <label style="margin-left:5px;"><input type="radio" value="Paid" name="payment" />&nbsp; Paid</label>
+                <label style="margin-left:5px;"><input type="radio" value="Credit" name="payment" checked />&nbsp; Credit</label>
+            </td>
+        </tr>
+
+    <tr>
+        <td></td>
+        <td><br /><input type="submit" id="btnSubmit" value="Submit" style="width:200px; height:35px;" /></td>
+    </tr>
+</table>
+<br />
+<br />
+
+
+
+    <script>
+        
+        //Checking if Batch ID already exist or not
+        function BatchIDAvailability() {
+
+            var data = {
+                batchID: $("#batchID").val()
+            };
+
+            data = JSON.stringify(data);
+
+            $.ajax({
+                url: 'CheckBatchID',
+                type: "POST",
+                data: data,
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    if (d.status == true) {
+                        $('#batchID').siblings('span.batchIDExist').css('visibility', 'visible');
+                    }
+                    else if (d.status == false){
+                        $('#batchID').siblings('span.batchIDExist').css('visibility', 'hidden');
+                    }
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                }
+            });
+        }
+          
+
+
+        //Getting Supplier List from Database through controller using JsonResult
+        function populateSupplier() {
+            $.get('/NewPurchase/getSupplier', {}, function (data) {
+                $('#SelectSupplier').empty();
+                $('#SelectSupplier').append($("<option value='0'>Select Supplier</option>"));
+                $.each(data, function (key, value) {
+                    $('#SelectSupplier').append($("<option></option>").val(value.ID).html(value.Supplier_Name));
+                });
+            }, 'json');
+        }
+
+        //Comparing Selling Price and Cost Price
+         $('#sellPrice').on('blur', function () {
+                var cp = Number($('#costPrice').val());
+                var sp = Number($('#sellPrice').val());
+
+                if (sp <= cp) {
+                    $('#sellPrice').siblings('span.compare').css('visibility', 'visible');
+                    $('#sellPrice').val('');
+                }
+                else {
+                    $('#sellPrice').siblings('span.error').css('visibility', 'hidden');
+                }
+                
+         });
+
+         $(document).on('ready', function () {
+
+            //For calculating Amount and Grand Total Automatically
+             $('#btnNext').on('click', function () {
+                 var subTotal = 0;
+                 var total = 0;
+                 $('#amount').val('');
+                 $('#discount').val('');
+                 $('#grandTotal').val('');
+
+                 $('#mytable tr').each(function () {
+                     var qty = $.trim($(this).find(".tdQty").html());
+                     var cp = $.trim($(this).find(".tdCp").html());
+                     total = Number(qty) * Number(cp);
+                     subTotal += total;
+                 });
+
+                 $('#amount').val(subTotal);
+                 $('#grandTotal').val(subTotal);
+             });
+
+             //For calculating  Grand Total after the Discount Percentage
+             $('#discount').keyup(function () {
+                 var amount = Number($('#amount').val());
+                 var discount = Number($('#discount').val());
+
+                 if (amount == null && discount == null) {
+                     $('#grandTotal').val(amount);
+                 }
+
+                 var discountAmount = (amount * discount) / 100;
+                 var grandTotal = (amount - discountAmount).toFixed(2);
+                 $('#discountAmount').val(discountAmount);
+                 $('#grandTotal').val(grandTotal);
+
+             });
+             
+             //Calling populateSupplier Function to fill the dropdownlist with supplier name using JsonResult
+            populateSupplier();
+
+          //Getting Medicine List from Database through controller using JsonResult
+            $.get('/NewPurchase/getMedicine', {}, function (data) {
+                $('#SelectMedicine').empty();
+                $('#SelectMedicine').append($("<option value='0'>Select Items</option>"))
+                $.each(data, function (key, value) {
+                    $('#SelectMedicine').append($('<option></option>').val(value.ID).html(value.Medicine_Name));
+               });
+                }, 'json');
+
+         });
+
+
+        //Adding Medicines into the table
+        var purchaseItems = [];
+        $('#btnAdd').on('click', function () {
+
+            //jQuery Validations
+            var isValidation = true;
+            if ($('#SelectSupplier').val() == "0") {
+                isValidation = false;
+                $('#SelectSupplier').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#SelectSupplier').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#purchaseDate').val() == '') {
+                isValidation = false;
+                $('#purchaseDate').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#purchaseDate').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#SelectMedicine').val() == "0") {
+                isValidation = false;
+                $('#SelectMedicine').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#SelectMedicine').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#batchID').val() == "") {
+                isValidation = false;
+                $('#batchID').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#batchID').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#quantity').val() == '') {
+                isValidation = false;
+                $('#quantity').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#quantity').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#costPrice').val() == '' || isNaN($('#costPrice').val().trim())) {
+                isValidation = false;
+                $('#costPrice').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#costPrice').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#sellPrice').val() == '' || isNaN($('#sellPrice').val().trim())) {
+                isValidation = false;
+                $('#sellPrice').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#sellPrice').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#productionDate').val() == '') {
+                isValidation = false;
+                $('#productionDate').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#productionDate').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#expireDate').val() == '') {
+                isValidation = false;
+                $('#expireDate').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#expireDate').siblings('span.error').css('visibility', 'hidden');
+            }
+
+
+            if (isValidation) {
+                purchaseItems.push({
+                    Medicine_ID: $('#SelectMedicine').val(),
+                    Medicine_Name: $('#SelectMedicine option:selected').text(),
+                    Batch_ID: $('#batchID').val(),
+                    Quantity: $('#quantity').val(),
+                    Cost_Price: $('#costPrice').val(),
+                    Sell_Price: $('#sellPrice').val(),
+                    Expire_Date: $('#expireDate').val(),
+                    Production_Date: $('#productionDate').val(),
+                    Purchase_ID:$('#purchaseID').val()
+                });
+
+                $('#SelectMedicine').val('0').focus();
+                $('#batchID, #quantity, #costPrice, #sellPrice, #expireDate,#productionDate').val('');
+            }
+            GeneratedItemsTable();
+        });
+
+
+        $('#btnSubmit').on('click', function () {
+
+            var isAllValid = true;
+
+            if (purchaseItems.length == 0) {
+                isAllValid = false;
+                alert('Please Add items to purchase!');
+            }
+
+            if ($('#SelectSupplier').val() == "0") {
+                isAllValid = false;
+                $('#SelectSupplier').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#SelectSupplier').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#purchaseDate').val() == '') {
+                isAllValid = false;
+                $('#purchaseDate').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#purchaseDate').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#amount').val() == '' || isNaN($('#amount').val())) {
+                isAllValid = false;
+                $('#amount').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#amount').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#discount').val() == '' || isNaN($('#discount').val())) {
+                isAllValid = false;
+                $('#discount').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#discount').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if ($('#description').val() == '') {
+                isAllValid = false;
+                $('#description').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#description').siblings('span.error').css('visibility', 'hidden');
+            }
+
+            if (isAllValid) {
+                var data = {
+                Purchase_ID:$("#purchaseID").val(),
+                Supplier_ID: $('#SelectSupplier').val(),
+                Entry_Date: $('#purchaseDate').val(),
+                Amount: $('#amount').val(),
+                Discount: $('#discount').val(),
+                Discount_Amount: $('#discountAmount').val(),
+                Grand_Total: $('#grandTotal').val(),
+                //IsPaid: $('#payment').is(":checked") ? 1 : 0,
+                IsPaid:$("input[name='payment']:checked").val(),
+                Description: $('#description').val(),
+                PurchaseItems: purchaseItems
+            }
+
+            $(this).val('Please wait...');
+
+            $.ajax({
+                url: 'SavePurchase',
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (d) {
+                    //check is successfully save to database
+                    if (d.status == true) {
+                        //will send status from server side
+                        alert('Successfully done.');
+                        location.reload(true);
+                        //clear form
+                        purchaseItems = [];
+                        $('#PurchaseID').val('');
+                        $('#InvocingDate').val('');
+                        $('#SelectSupplier').val('0');
+
+                    }
+                    else {
+                        alert('Failed');
+                    }
+                    $('#submit').val('Save');
+                },
+                error: function () {
+                    alert('Error. Please try again.');
+                    $('#btnSubmit').val('Save');
+                }
+            });
+        }
+        });
+
+        //Function for adding medicines into the table
+        function GeneratedItemsTable() {
+            if (purchaseItems.length > 0) {
+                var $table = $('<table id="mytable" border="1" cellpadding="10"/>');
+                $table.append('<thead><tr"><th>Item</th><th>Batch</th><th>Qty</th><th>CP</th><th>SP</th><th>Production Date</th><th>Expiry Date</th><th>Delete</th></tr></thead>');
+                var $tbody = $('<tbody/>');
+
+                $.each(purchaseItems, function (i, val) {
+                    var $row = $('<tr/>');
+                    //$row.append($('<td/>').html(val.Medicine_ID));
+                    $row.append($('<td/>').html(val.Medicine_Name));
+                    $row.append($('<td/>').html(val.Batch_ID));
+                    $row.append($('<td class="tdQty"/>').html(val.Quantity));
+                    $row.append($('<td class="tdCp"/>').html(val.Cost_Price));
+                    $row.append($('<td/>').html(val.Sell_Price));
+                    $row.append($('<td/>').html(val.Expire_Date));
+                    $row.append($('<td/>').html(val.Production_Date));
+                    $row.append($('<td/>').html('<a href=# onclick="removeItem(this)" >Remove</a>'));
+                    $tbody.append($row);
+                });
+                $table.append($tbody);
+                $('#orderItems').html($table);
+            }
+            else {
+                alert("List is empty !");
+            }
+        }
+
+        function removeItem(obj) {
+            var $index = $(obj).parent().parent()[0].sectionRowIndex;
+            purchaseItems.splice($index, 1);
+            $(obj).parent().parent().remove();
+            GeneratedItemsTable();
+        }
+
+    </script>
+
+
+    <style>
+        th {
+            width: 300px;
+        }
+
+        span.error {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+        span.compare {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+        span.batchIDExist {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+    </style>

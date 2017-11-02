@@ -1,0 +1,180 @@
+﻿@model PharmacyManagementSystem.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Create";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Dashboard/StaffDashboard'</script>");
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+<h2>&nbspNew User Entry</h2>
+
+<hr width="99%">
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <table cellspacing="40">
+
+        <tr align="right">
+            <td>Name </td>
+            <td align="left">@Html.TextBoxFor(model => model.Name, new { style = "width:300px; height:30px; font-size: 16px;" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Name, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Email</td>
+            <td> @Html.TextBoxFor(model => model.Email, new { style = "width:300px; height:30px; font-size: 16px;" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Email, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Date of Birth</td>
+            <td>@Html.TextBoxFor(model => model.Date_of_Birth, new { style = "width:300px; height:30px; font-size: 16px;", @type = "date" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Date_of_Birth, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Gender</td>
+            <td align="left">
+                @Html.RadioButtonFor(model => model.Gender, "Male") Male
+                @Html.RadioButtonFor(model => model.Gender, "Female") Female
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Gender, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Age</td>
+            <td>@Html.TextBoxFor(model => model.Age, new { style = "width:300px; height:30px; font-size: 16px;" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Age, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Address</td>
+            <td>@Html.TextAreaFor(model => model.Address, new { style = "width:300px; height:70px; font-size: 16px;" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Address, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Contact</td>
+            <td>@Html.TextBoxFor(model => model.Contact, new { style = "width:300px; height:30px; font-size: 16px;" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Contact, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Blood Group</td>
+            <td>
+                @Html.DropDownListFor(model => model.Blood_Group,
+                  new List<SelectListItem> {
+                      new SelectListItem{ Text="Select Blood Group", Value = "" },
+                       new SelectListItem{ Text="A+", Value = "A+" },
+                        new SelectListItem{ Text="A-", Value = "A-" },
+                        new SelectListItem{ Text="B+", Value = "B+" },
+                        new SelectListItem{ Text="B-", Value = "B-" },
+                        new SelectListItem{ Text="O+", Value = "O+" },
+                        new SelectListItem{ Text="O-", Value = "O-" },
+                        new SelectListItem{ Text="AB+", Value = "AB+" },
+                        new SelectListItem{ Text="AB-", Value = "AB-" }
+                    },
+                    new { style = "width:300px; height:30px; font-size: 16px;"})
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Blood_Group, null, new { style = "color:red" })</td>
+            
+        </tr>
+
+        <tr align="right">
+            <td>Marital Status</td>
+            <td align="left">
+                @Html.RadioButtonFor(model => model.Marital_Status, "Married") Married
+                @Html.RadioButtonFor(model => model.Marital_Status, "Unmarried") Unmarried
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Marital_Status, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Join Date</td>
+            <td> @Html.TextBoxFor(model => model.Join_Date, new { style = "width:300px; height:30px; font-size: 16px;", @type = "date" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Join_Date, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Salary</td>
+            <td>@Html.TextBoxFor(model => model.Salary, new { style = "width:300px; height:30px; font-size: 16px;" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Salary, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Username</td>
+            <td>@Html.TextBoxFor(model => model.Username, new { style = "width:300px; height:30px; font-size: 16px;" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Username, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Password</td>
+            <td>@Html.TextBoxFor(model => model.Password, new { style = "width:300px; height:30px; font-size: 16px;" })</td>
+            <td>@Html.ValidationMessageFor(model => model.Password, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr align="right">
+            <td>Usertype</td>
+            <td align="left">
+                @Html.RadioButtonFor(model => model.Usertype, "Admin") Admin
+                @Html.RadioButtonFor(model => model.Usertype, "Staff") Staff
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Usertype, null, new { style = "color:red" })</td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><input type="submit" id="btnSubmit" value="Create" style="width:100px; height:35px;" /></td>
+        </tr>
+    </table>
+
+}
+
+<div>
+    &nbsp   @Html.ActionLink("Back to List", "Index")
+</div>
+<br />
+
+<script>
+
+    $('#btnSubmit').on('click', function () {
+        if ($('#SelectBloodGroup').val() == "") {
+            isAllValid = false;
+            $('#SelectBloodGroup').siblings('span.error').css('visibility', 'visible');
+        }
+        else {
+            $('#SelectBloodGroup').siblings('span.error').css('visibility', 'hidden');
+        }
+    });
+</script>
+
+
+<style>
+ 
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+</style>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

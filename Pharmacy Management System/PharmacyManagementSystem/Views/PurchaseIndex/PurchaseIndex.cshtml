@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "PurchaseIndex";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+<h2>PurchaseIndex</h2>
+<h3>@Html.ActionLink("New Purchase", "Index", "NewPurchase")</h3>
+<h3>@Html.ActionLink("Purchase History", "Index", "PurchaseHistory")</h3>
+<h3>@Html.ActionLink("Supplier", "Index", "Supplier")</h3>

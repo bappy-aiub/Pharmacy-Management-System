@@ -1,0 +1,59 @@
+﻿@model PharmacyManagementSystem.Models.Drug_Generic_name
+
+@{
+    ViewBag.Title = "Delete";
+
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/DrugGenericName/Index'</script>");
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+<div>
+    <h2>&nbspDelete Generic Details</h2>
+
+    <hr width="99%">
+
+    <h3>&nbsp&nbspAre you sure you want to delete this?</h3>
+</div>
+
+<table border="1" cellpadding="10" style="margin-top:30px; margin-left:10px; margin-right:10px;margin-bottom:30px">
+
+    <tr>
+        <td>ID</td>
+        <td> @Html.DisplayFor(model => model.ID)</td>
+    </tr>
+
+    <tr>
+        <td>Genric Name</td>
+        <td> @Html.DisplayFor(model => model.Genric_Name)</td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td> @Html.DisplayFor(model => model.Description)</td>
+    </tr>
+
+</table>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="submit" value="Delete" style=" height:29px; width:100px; margin:0px 10px 30px 10px " />
+}
+
+<div>
+    &nbsp @Html.ActionLink("Back to List", "Index")
+</div>
+
+<br />
+

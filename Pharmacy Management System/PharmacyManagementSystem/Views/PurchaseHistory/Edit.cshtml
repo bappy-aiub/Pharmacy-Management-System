@@ -1,0 +1,69 @@
+﻿@model PharmacyManagementSystem.Models.Purchase
+
+@{
+    ViewBag.Title = "Edit";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/PurchaseHistory/Index'</script>");
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <table cellspacing="40">
+
+        <tr align="right">
+            <td>Purchase ID</td>
+            <td>
+                @Html.TextBoxFor(model => model.Purchase_ID, new { style = "width:300px; height:25px; font-size: 16px;", @readonly = "readonly" })
+            </td>
+        </tr>
+        <tr align="right">
+            <td>Discount(%)</td>
+            <td>
+                @Html.TextBoxFor(model => model.Discount, new { style = "width:300px; height:25px; font-size: 16px;", @readonly = "readonly" })
+            </td>
+        </tr>
+        <tr align="right">
+            <td>Description</td>
+            <td>
+                @Html.TextAreaFor(model => model.Description, new { style = "width:300px; height:100px; font-size: 16px;" })
+            </td>
+        </tr>
+        <tr align="right">
+            <td>IsPaid</td>
+            <td align="left">
+                @Html.RadioButtonFor(model => model.IsPaid, "Paid") Paid
+                @Html.RadioButtonFor(model => model.IsPaid, "Credit") Credit
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Update" style="width:100px; height:35px;" /></td>
+        </tr>
+
+    </table>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

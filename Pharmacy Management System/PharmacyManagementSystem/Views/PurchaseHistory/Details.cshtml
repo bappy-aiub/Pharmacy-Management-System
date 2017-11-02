@@ -1,0 +1,119 @@
+﻿@model IEnumerable<PharmacyManagementSystem.Models.Batch>
+@*@model PharmacyManagementSystem.Models.Batch*@
+
+@{
+    ViewBag.Title = "Details";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+<h2>&nbspPurchase Details</h2>
+
+<hr width="99%">
+
+
+
+<table align="center">
+
+    <tr>
+        <td style="font-weight:bold;font-size:20px;">Purchase ID : </td>
+        <td></td>
+        <td align="center" style="font-size:20px;">@Html.DisplayFor(model => model.First().Purchase_ID)</td>
+    </tr>    
+    <tr>
+        <td style="font-weight:bold;font-size:20px;">Date : </td>
+        <td></td>
+        <td align="center" style="font-size:20px;">@Html.DisplayFor(model => model.First().Purchase.Entry_Date)</td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;font-size:20px;">Description : </td>
+        <td></td>
+        <td align="center" style="font-size:20px;">@Html.DisplayFor(model => model.First().Purchase.Description)</td>
+    </tr>
+        
+</table>
+
+<br />
+
+
+
+    <div align="center">
+
+        <table border="1" cellpadding="10" style="margin-top:10px; margin-left:10px;">
+            <tr>
+                <th>
+                    Purhase ID
+                </th>
+                <th>
+                    Medicine Name
+                </th>
+                <th>
+                    Batch ID
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Cost Price
+                </th>
+                <th>
+                    Sell Price
+                </th>
+                <th>
+                    Production Date
+                </th>
+                <th>
+                    Expire Date
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Purchase_ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Medicine_Information.Medicine_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Batch_ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cost_Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sell_Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Production_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Expire_Date)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+
+<p>
+    &nbsp&nbsp  @Html.ActionLink("Back to List", "Index")
+</p>

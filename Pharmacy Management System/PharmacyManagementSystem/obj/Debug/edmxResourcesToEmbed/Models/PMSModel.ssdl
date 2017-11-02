@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityType Name="Batch">
+    <Key>
+      <PropertyRef Name="Batch_ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Batch_ID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="Cost_Price" Type="float" Nullable="false" />
+    <Property Name="Sell_Price" Type="float" Nullable="false" />
+    <Property Name="Production_Date" Type="date" Nullable="false" />
+    <Property Name="Expire_Date" Type="date" Nullable="false" />
+    <Property Name="Purchase_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Medicine_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Bill_Information">
+    <Key>
+      <PropertyRef Name="Invoice_No" />
+    </Key>
+    <Property Name="Invoice_No" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Total_Amount" Type="float" Nullable="false" />
+    <Property Name="Discount" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Discount_Amount" Type="float" Nullable="false" />
+    <Property Name="Total_Payable" Type="float" Nullable="false" />
+    <Property Name="Paid" Type="float" Nullable="false" />
+    <Property Name="Returned" Type="float" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Drug_Generic_name">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Genric_Name" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Manufacturer">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Manufacturer_Name" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Medicine_Information">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Medicine_Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Category" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Generic_ID" Type="int" Nullable="false" />
+    <Property Name="Manufacturer_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Purchase">
+    <Key>
+      <PropertyRef Name="Purchase_ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Purchase_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Amount" Type="int" Nullable="false" />
+    <Property Name="Discount" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Discount_Amount" Type="float" Nullable="false" />
+    <Property Name="Grand_Total" Type="float" Nullable="false" />
+    <Property Name="IsPaid" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Entry_Date" Type="date" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Supplier_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sales">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="Cost" Type="float" Nullable="false" />
+    <Property Name="Amount" Type="float" Nullable="false" />
+    <Property Name="Medicine_ID" Type="int" Nullable="false" />
+    <Property Name="Bill_Invoice" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Supplier_Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Contact" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="User_Access">
+    <Key>
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="Usertype" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User_Information">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Gender" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Date_of_Birth" Type="date" Nullable="false" />
+    <Property Name="Age" Type="int" Nullable="false" />
+    <Property Name="Address" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Contact" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Blood_Group" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Marital_Status" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Join_Date" Type="date" Nullable="false" />
+    <Property Name="Salary" Type="int" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Batch__Medicine___1F98B2C1">
+    <End Role="Medicine_Information" Type="Self.Medicine_Information" Multiplicity="1" />
+    <End Role="Batch" Type="Self.Batch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medicine_Information">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Batch">
+        <PropertyRef Name="Medicine_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Batch__Purchase___1EA48E88">
+    <End Role="Purchase" Type="Self.Purchase" Multiplicity="1" />
+    <End Role="Batch" Type="Self.Batch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Purchase">
+        <PropertyRef Name="Purchase_ID" />
+      </Principal>
+      <Dependent Role="Batch">
+        <PropertyRef Name="Purchase_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Medicine___Gener__2D27B809">
+    <End Role="Drug_Generic_name" Type="Self.Drug_Generic_name" Multiplicity="1" />
+    <End Role="Medicine_Information" Type="Self.Medicine_Information" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Drug_Generic_name">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Medicine_Information">
+        <PropertyRef Name="Generic_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Medicine___Manuf__2E1BDC42">
+    <End Role="Manufacturer" Type="Self.Manufacturer" Multiplicity="1" />
+    <End Role="Medicine_Information" Type="Self.Medicine_Information" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Manufacturer">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Medicine_Information">
+        <PropertyRef Name="Manufacturer_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Purchase__Suppli__17036CC0">
+    <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
+    <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supplier">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Purchase">
+        <PropertyRef Name="Supplier_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Sales__Bill_Invo__25518C17">
+    <End Role="Bill_Information" Type="Self.Bill_Information" Multiplicity="1" />
+    <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bill_Information">
+        <PropertyRef Name="Invoice_No" />
+      </Principal>
+      <Dependent Role="Sales">
+        <PropertyRef Name="Bill_Invoice" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Sales__Medicine___245D67DE">
+    <End Role="Medicine_Information" Type="Self.Medicine_Information" Multiplicity="1" />
+    <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medicine_Information">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Sales">
+        <PropertyRef Name="Medicine_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__User_Info__Usern__1B0907CE">
+    <End Role="User_Access" Type="Self.User_Access" Multiplicity="1" />
+    <End Role="User_Information" Type="Self.User_Information" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User_Access">
+        <PropertyRef Name="Username" />
+      </Principal>
+      <Dependent Role="User_Information">
+        <PropertyRef Name="Username" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PMSModelStoreContainer">
+    <EntitySet Name="Batch" EntityType="Self.Batch" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Bill_Information" EntityType="Self.Bill_Information" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Drug_Generic_name" EntityType="Self.Drug_Generic_name" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Manufacturer" EntityType="Self.Manufacturer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Medicine_Information" EntityType="Self.Medicine_Information" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Purchase" EntityType="Self.Purchase" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sales" EntityType="Self.Sales" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User_Access" EntityType="Self.User_Access" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User_Information" EntityType="Self.User_Information" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Batch__Medicine___1F98B2C1" Association="Self.FK__Batch__Medicine___1F98B2C1">
+      <End Role="Medicine_Information" EntitySet="Medicine_Information" />
+      <End Role="Batch" EntitySet="Batch" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Batch__Purchase___1EA48E88" Association="Self.FK__Batch__Purchase___1EA48E88">
+      <End Role="Purchase" EntitySet="Purchase" />
+      <End Role="Batch" EntitySet="Batch" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Medicine___Gener__2D27B809" Association="Self.FK__Medicine___Gener__2D27B809">
+      <End Role="Drug_Generic_name" EntitySet="Drug_Generic_name" />
+      <End Role="Medicine_Information" EntitySet="Medicine_Information" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Medicine___Manuf__2E1BDC42" Association="Self.FK__Medicine___Manuf__2E1BDC42">
+      <End Role="Manufacturer" EntitySet="Manufacturer" />
+      <End Role="Medicine_Information" EntitySet="Medicine_Information" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Purchase__Suppli__17036CC0" Association="Self.FK__Purchase__Suppli__17036CC0">
+      <End Role="Supplier" EntitySet="Supplier" />
+      <End Role="Purchase" EntitySet="Purchase" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Sales__Bill_Invo__25518C17" Association="Self.FK__Sales__Bill_Invo__25518C17">
+      <End Role="Bill_Information" EntitySet="Bill_Information" />
+      <End Role="Sales" EntitySet="Sales" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Sales__Medicine___245D67DE" Association="Self.FK__Sales__Medicine___245D67DE">
+      <End Role="Medicine_Information" EntitySet="Medicine_Information" />
+      <End Role="Sales" EntitySet="Sales" />
+    </AssociationSet>
+    <AssociationSet Name="FK__User_Info__Usern__1B0907CE" Association="Self.FK__User_Info__Usern__1B0907CE">
+      <End Role="User_Access" EntitySet="User_Access" />
+      <End Role="User_Information" EntitySet="User_Information" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

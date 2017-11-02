@@ -1,0 +1,63 @@
+﻿@model PharmacyManagementSystem.Models.User_Access
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    @section Scripts{
+        @Scripts.Render("~/Bundle/jqueryval");
+    }
+</head>
+<body>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+    <table cellspacing="40" align="center">
+
+        <tr align="center">
+            <td></td>
+            <td><h1>Keystone Pharmacy</h1></td>
+        </tr>
+
+        <tr align="center">
+            <td>Username</td>
+            <td>
+                @Html.TextBoxFor(model => model.Username, new { style = "width:300px; height:25px; font-size: 16px;" })
+                @Html.ValidationMessageFor(model => model.Username, null, new { style="color:red"})
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>Password</td>
+            <td>
+                @Html.PasswordFor(model => model.Password, new { style = "width:300px; height:25px; font-size: 16px;" })
+                @Html.ValidationMessageFor(model => model.Password, null, new { style = "color:red" })
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>@Html.ValidationMessage("Error", new { style = "color:red" })</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Login" style="width:100px; height:35px;" /></td>
+        </tr>
+
+        </table>
+
+        }
+
+</body>
+
+</html>

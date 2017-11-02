@@ -1,0 +1,102 @@
+﻿@model IEnumerable<PharmacyManagementSystem.Models.Medicine_Information>
+
+@{
+    ViewBag.Title = "Index";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+<h2>&nbspList of Medicine Information</h2>
+
+<hr width="99%">
+
+<p>
+    &nbsp&nbsp
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<p>
+    @using (@Html.BeginForm("Index", "Medicine", FormMethod.Get))
+    {
+        <b>&nbsp&nbspSearch By:</b>
+        @Html.RadioButton("searchBy", "Medicine_Name", true) <text>Medicine</text>
+        @Html.RadioButton("searchBy", "Category") <text>Category</text>
+        @Html.RadioButton("searchBy", "Genric_Name") <text>Generic Name</text>
+        @Html.RadioButton("searchBy", "Manufacturer_Name") <text>Manufacturer</text><br /><br />
+        @Html.TextBox("Search", null, new { @style = " height:22px; width:200px;margin: 0px 5px 0px 10px" })    <input type="submit" value="Search" style=" height:29px; width:100px " />
+    }
+</p>
+
+<table border="1" cellpadding="10" style="margin-top:10px; margin-left:10px;">
+    <tr>
+        <th>
+            Medicine Name
+        </th>
+        <th>
+            Category
+        </th>
+        <th>
+            Generic Name
+        </th>
+        <th>
+            Manufacturer
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
+@if (Model.Count() == 0)
+    {
+    <tr>
+        <td colspan="6" align="center">
+            No records match search criteria
+        </td>
+    </tr>
+    }
+
+    else
+    {
+       foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medicine_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Drug_Generic_name.Genric_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Manufacturer.Manufacturer_Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+        }
+</table>
+
+<br />
+<br />
+<div>
+    &nbsp   @Html.ActionLink("Back to Inventory", "Inventory", "Inventory")
+</div>
+<br />

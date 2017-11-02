@@ -1,0 +1,68 @@
+﻿@model PharmacyManagementSystem.Models.Sale
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Sale</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Quantity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Quantity)
+            @Html.ValidationMessageFor(model => model.Quantity)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cost)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Cost)
+            @Html.ValidationMessageFor(model => model.Cost)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Amount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Amount)
+            @Html.ValidationMessageFor(model => model.Amount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Medicine_ID, "Medicine_Information")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Medicine_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Medicine_ID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Bill_Invoice, "Bill_Information")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Bill_Invoice", String.Empty)
+            @Html.ValidationMessageFor(model => model.Bill_Invoice)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

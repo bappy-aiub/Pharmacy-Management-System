@@ -1,0 +1,56 @@
+﻿@model PharmacyManagementSystem.Models.Manufacturer
+
+@{
+    ViewBag.Title = "Create";
+    if (Session["Usertype"] != null)
+    {
+        if (Session["Usertype"].ToString() == "Admin")
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Manufacturer/Index'</script>");
+        }
+    }
+    else
+    {
+        Response.Write("<script>alert('You dont have permission to access this page') ; window.location.href='/Login/Login'</script>");
+    }
+}
+
+<h2>&nbspCreate Manufacturer</h2>
+
+<hr width="99%">
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    
+    <table cellspacing="40" >
+
+        <tr align="right">
+            <td>Manufacturer Name</td>
+            <td>
+                @Html.TextBoxFor(model => model.Manufacturer_Name, new { style = "width:300px; height:25px; font-size: 16px;" }) 
+            </td>
+            <td align="left">@Html.ValidationMessageFor(model => model.Manufacturer_Name, null, new { style = "color:red;" })</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Create" style="width:100px; height:35px;" /></td>
+        </tr>
+
+    </table>
+
+}
+
+<div>
+    &nbsp   @Html.ActionLink("Back to List", "Index")
+</div>
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
